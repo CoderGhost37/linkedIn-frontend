@@ -8,8 +8,7 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
+import { apiFetch, setToken } from '@/lib/api'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -25,16 +24,16 @@ export default function LoginPage() {
     e.preventDefault()
     setLoading(true)
     try {
-      const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
+      const response = await apiFetch('/api/auth/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
-        credentials: 'include',
       })
       if (!response.ok) {
         const errorData = await response.json()
         throw new Error(errorData.message || 'Login failed')
       }
+      const data = await response.json()
+      setToken(data.token)
       toast.success('Welcome back!', { description: 'You have signed in successfully.' })
       router.push('/feed')
     } catch (err) {
