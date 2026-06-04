@@ -27,9 +27,9 @@ import { apiFetch, removeToken } from '@/lib/api'
 import LinkedInLogo from '@/public/logo.png'
 
 const NAV_ITEMS = [
-  { href: '/feed',          icon: Home,  label: 'Home' },
-  { href: '/mynetwork',     icon: Users, label: 'My Network' },
-  { href: '/notifications', icon: Bell,  label: 'Notifications' },
+  { href: '/feed', icon: Home, label: 'Home' },
+  { href: '/mynetwork', icon: Users, label: 'My Network' },
+  { href: '/notifications', icon: Bell, label: 'Notifications' },
 ] as const
 
 interface UserProfile {
@@ -91,18 +91,18 @@ export function Navbar() {
     apiFetch('/api/user/profile')
       .then(r => r.ok ? r.json() : null)
       .then(data => data && setProfile(data))
-      .catch(() => {})
+      .catch(() => { })
   }, [])
 
   const handleSignOut = async () => {
-    await apiFetch('/api/auth/logout', { method: 'POST' }).catch(() => {})
+    await apiFetch('/api/auth/logout', { method: 'POST' }).catch(() => { })
     removeToken()
     router.push('/auth/login')
   }
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-card">
-      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 gap-4">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 gap-4">
 
         {/* Left — logo + search */}
         <div className="flex items-center gap-2 shrink-0">
