@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Inter } from "next/font/google"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import { Toaster } from "@/components/ui/sonner"
 import { cn } from "@/lib/utils";
 
 const geistHeading = Geist({ subsets: ['latin'], variable: '--font-heading' });
@@ -54,7 +55,6 @@ export const metadata: Metadata = {
     apple: "/favicon/apple-touch-icon.png",
     shortcut: "/favicon/favicon.ico",
   },
-  manifest: "/site.webmanifest",
   robots: {
     index: true,
     follow: true,
@@ -66,10 +66,6 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#0A66C2" },
-    { media: "(prefers-color-scheme: dark)", color: "#70B5F9" },
-  ],
 }
 
 export default function RootLayout({
@@ -85,6 +81,7 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider>{children}</ThemeProvider>
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   )
