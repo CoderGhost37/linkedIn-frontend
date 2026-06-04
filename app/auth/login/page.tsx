@@ -39,8 +39,6 @@ export default function LoginPage() {
         throw new Error(errorData.message || 'Login failed')
       }
 
-      const { token } = await response.json()
-      localStorage.setItem('authToken', token)
       router.push('/feed')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
@@ -50,9 +48,9 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen flex-col lg:flex-row">
       {/* Left Side - Background Image */}
-      <div className="hidden w-1/2 lg:flex lg:flex-col lg:justify-between bg-gradient-to-b from-[#1a3a52] to-[#0f2a3d] p-12">
+      <div className="hidden w-full lg:flex lg:w-1/2 lg:flex-col lg:justify-between bg-gradient-to-b from-[#1a3a52] to-[#0f2a3d] px-8 py-12 lg:px-12">
         <div className="flex items-center gap-2">
           <svg
             className="h-8 w-8 text-white"
@@ -79,7 +77,7 @@ export default function LoginPage() {
       </div>
 
       {/* Right Side - Form */}
-      <div className="flex w-full flex-col justify-center px-6 py-8 lg:w-1/2 lg:px-12">
+      <div className="flex w-full flex-col justify-center px-4 py-8 sm:px-6 lg:w-1/2 lg:px-12">
         <div className="mx-auto w-full max-w-sm">
           {/* Mobile Logo */}
           <div className="mb-8 flex lg:hidden items-center gap-2">
