@@ -94,8 +94,8 @@ export default function SignupPage() {
             <span className="text-lg font-bold text-[#0A66C2]">LinkedIn</span>
           </div>
 
-          <h1 className="mb-2 text-2xl font-bold text-gray-900">Create account</h1>
-          <p className="mb-6 text-gray-600">Enter your details to get started</p>
+          <h1 className="mb-2 text-2xl font-bold text-foreground">Create account</h1>
+          <p className="mb-6 text-muted-foreground">Enter your details to get started</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
@@ -106,11 +106,11 @@ export default function SignupPage() {
 
             {/* Full Name */}
             <div className="space-y-2">
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="name" className="block text-sm font-medium text-foreground">
                 Full Name
               </label>
               <div className="relative">
-                <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                <User className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
                 <input
                   id="name"
                   name="name"
@@ -119,18 +119,18 @@ export default function SignupPage() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full border border-gray-300 rounded-lg bg-white pl-10 pr-4 py-2 text-gray-900 placeholder-gray-500 focus:border-[#0A66C2] focus:outline-none focus:ring-1 focus:ring-[#0A66C2]"
+                  className="w-full border border-border rounded-lg bg-card pl-10 pr-4 py-2 text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
             </div>
 
             {/* Email */}
             <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-foreground">
                 Email
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                <Mail className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
                 <input
                   id="email"
                   name="email"
@@ -139,18 +139,18 @@ export default function SignupPage() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full border border-gray-300 rounded-lg bg-white pl-10 pr-4 py-2 text-gray-900 placeholder-gray-500 focus:border-[#0A66C2] focus:outline-none focus:ring-1 focus:ring-[#0A66C2]"
+                  className="w-full border border-border rounded-lg bg-card pl-10 pr-4 py-2 text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
             </div>
 
             {/* Password */}
             <div className="space-y-2">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-medium text-foreground">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                <Lock className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
                 <input
                   id="password"
                   name="password"
@@ -159,7 +159,7 @@ export default function SignupPage() {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="w-full border border-gray-300 rounded-lg bg-white pl-10 pr-4 py-2 text-gray-900 placeholder-gray-500 focus:border-[#0A66C2] focus:outline-none focus:ring-1 focus:ring-[#0A66C2]"
+                  className="w-full border border-border rounded-lg bg-card pl-10 pr-4 py-2 text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
             </div>
@@ -175,22 +175,22 @@ export default function SignupPage() {
           </form>
 
           {/* Sign In Link */}
-          <p className="mt-6 text-center text-sm text-gray-600">
+          <p className="mt-6 text-center text-sm text-muted-foreground">
             Already have an account?{' '}
-            <Link href="/auth/login" className="font-semibold text-[#0A66C2] hover:underline">
+            <Link href="/auth/login" className="font-semibold text-primary hover:underline">
               Sign in
             </Link>
           </p>
 
           {/* Footer Links */}
-          <div className="mt-8 space-y-2 border-t border-gray-200 pt-8 text-center text-xs text-gray-500">
+          <div className="mt-8 space-y-2 border-t border-border pt-8 text-center text-xs text-muted-foreground">
             <p>
               By signing up, you agree to our{' '}
-              <Link href="#" className="text-[#0A66C2] hover:underline">
+              <Link href="#" className="text-primary hover:underline">
                 Terms of Service
               </Link>
               {' '}and{' '}
-              <Link href="#" className="text-[#0A66C2] hover:underline">
+              <Link href="#" className="text-primary hover:underline">
                 Privacy Policy
               </Link>
             </p>

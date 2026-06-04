@@ -93,8 +93,8 @@ export default function LoginPage() {
             <span className="text-lg font-bold text-[#0A66C2]">LinkedIn</span>
           </div>
 
-          <h1 className="mb-2 text-2xl font-bold text-gray-900">Sign in</h1>
-          <p className="mb-6 text-gray-600">Stay updated on your professional world</p>
+          <h1 className="mb-2 text-2xl font-bold text-foreground">Sign in</h1>
+          <p className="mb-6 text-muted-foreground">Stay updated on your professional world</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
@@ -105,11 +105,11 @@ export default function LoginPage() {
 
             {/* Email */}
             <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-foreground">
                 Email address
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                <Mail className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
                 <input
                   id="email"
                   name="email"
@@ -118,18 +118,18 @@ export default function LoginPage() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full border border-gray-300 rounded-lg bg-white pl-10 pr-4 py-2 text-gray-900 placeholder-gray-500 focus:border-[#0A66C2] focus:outline-none focus:ring-1 focus:ring-[#0A66C2]"
+                  className="w-full border border-border rounded-lg bg-card pl-10 pr-4 py-2 text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
             </div>
 
             {/* Password */}
             <div className="space-y-2">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-medium text-foreground">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                <Lock className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
                 <input
                   id="password"
                   name="password"
@@ -138,7 +138,7 @@ export default function LoginPage() {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="w-full border border-gray-300 rounded-lg bg-white pl-10 pr-4 py-2 text-gray-900 placeholder-gray-500 focus:border-[#0A66C2] focus:outline-none focus:ring-1 focus:ring-[#0A66C2]"
+                  className="w-full border border-border rounded-lg bg-card pl-10 pr-4 py-2 text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
             </div>
@@ -154,22 +154,22 @@ export default function LoginPage() {
           </form>
 
           {/* Sign Up Link */}
-          <p className="mt-6 text-center text-sm text-gray-600">
+          <p className="mt-6 text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{' '}
-            <Link href="/auth/signup" className="font-semibold text-[#0A66C2] hover:underline">
+            <Link href="/auth/signup" className="font-semibold text-primary hover:underline">
               Join now
             </Link>
           </p>
 
           {/* Footer Links */}
-          <div className="mt-8 space-y-2 border-t border-gray-200 pt-8 text-center text-xs text-gray-500">
+          <div className="mt-8 space-y-2 border-t border-border pt-8 text-center text-xs text-muted-foreground">
             <p>
               By signing in, you agree to our{' '}
-              <Link href="#" className="text-[#0A66C2] hover:underline">
+              <Link href="#" className="text-primary hover:underline">
                 Terms of Service
               </Link>
               {' '}and{' '}
-              <Link href="#" className="text-[#0A66C2] hover:underline">
+              <Link href="#" className="text-primary hover:underline">
                 Privacy Policy
               </Link>
             </p>
