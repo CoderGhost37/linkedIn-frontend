@@ -184,8 +184,8 @@ export function PostCard({ post: initialPost }: { post: Post }) {
       {/* Image lightbox */}
       {post.mediaUrl && (
         <Dialog open={imageOpen} onOpenChange={setImageOpen}>
-          <DialogContent className="max-w-5xl w-[90vw] p-2">
-            <img src={post.mediaUrl} alt="Post media" className="w-full rounded-lg object-contain max-h-[88vh]" />
+          <DialogContent className="sm:max-w-5xl w-[92vw] p-2">
+            <img src={post.mediaUrl} alt="Post media" className="w-full rounded-lg object-contain max-h-[90vh]" />
           </DialogContent>
         </Dialog>
       )}
