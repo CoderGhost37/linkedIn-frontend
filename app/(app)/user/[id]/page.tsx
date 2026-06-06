@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
-import { MapPin, Mail, UserPlus, Check, User, Pencil } from 'lucide-react'
+import Link from 'next/link'
+import { MapPin, Mail, UserPlus, Check, User, Pencil, Users } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Card, CardContent } from '@/components/ui/card'
@@ -68,6 +69,12 @@ export default function UserPage() {
   const [editData, setEditData] = useState({ headline: '', location: '', bio: '' })
   const [saving, setSaving] = useState(false)
 
+  // Connections dialog
+  const [connDialogOpen, setConnDialogOpen] = useState(false)
+  const [connections, setConnections] = useState<UserProfile[]>([])
+  const [connLoading, setConnLoading] = useState(false)
+  const [connPendingIds, setConnPendingIds] = useState<Set<number>>(new Set())
+
   // Avatar upload modal
   const [avatarOpen, setAvatarOpen] = useState(false)
   const [selectedFile, setSelectedFile] = useState<FileWithPreview | null>(null)
@@ -76,23 +83,29 @@ export default function UserPage() {
   useEffect(() => {
     apiFetch('/api/user/profile')
       .then(r => r.ok ? r.json() : null)
-      .then(data => {
-        if (!data) return
-        setCurrentUserId(data.id)
-        return apiFetch('/api/connections/connected')
-          .then(r => r.ok ? r.json() : [])
-          .then((connections: { id: number }[]) => {
-            if (connections.some(c => String(c.id) === id)) setConnectStatus('connected')
-          })
-      })
-      .catch(() => { })
+      .then(data => data && setCurrentUserId(data.id))
+      .catch(() => {})
 
     apiFetch(`/api/user/profile/${id}`)
       .then(r => r.ok ? r.json() : null)
       .then(data => data && setProfile(data))
-      .catch(() => { })
+      .catch(() => {})
       .finally(() => setLoading(false))
+
+    // Fetch connections eagerly so count is visible on page load
+    setConnLoading(true)
+    apiFetch(`/api/connections/${id}`)
+      .then(r => r.ok ? r.json() : [])
+      .then(data => setConnections(data))
+      .catch(() => {})
+      .finally(() => setConnLoading(false))
   }, [id])
+
+  // Derive connect status from the connections list once both are ready
+  useEffect(() => {
+    if (currentUserId === null || connections.length === 0) return
+    if (connections.some(c => c.id === currentUserId)) setConnectStatus('connected')
+  }, [currentUserId, connections])
 
   useEffect(() => {
     if (currentUserId !== null && profile !== null && currentUserId === profile.id) {
@@ -148,6 +161,18 @@ export default function UserPage() {
       toast.error('Failed to update profile picture')
     } finally {
       setUploadingAvatar(false)
+    }
+  }
+
+  const openConnections = () => setConnDialogOpen(true)
+
+  const handleConnectFromDialog = async (userId: number) => {
+    setConnPendingIds(prev => new Set(prev).add(userId))
+    try {
+      const res = await apiFetch(`/api/connections/request/${userId}`, { method: 'POST' })
+      if (!res.ok) throw new Error()
+    } catch {
+      setConnPendingIds(prev => { const s = new Set(prev); s.delete(userId); return s })
     }
   }
 
@@ -244,6 +269,18 @@ export default function UserPage() {
             </p>
           </div>
 
+          {/* Connections count */}
+          <button
+            onClick={openConnections}
+            className="mt-2 flex items-center gap-1.5 text-sm text-primary hover:underline"
+          >
+            <Users className="h-4 w-4" />
+            <span className="font-semibold">
+              {connLoading ? '…' : connections.length}
+            </span>
+            <span className="text-muted-foreground">connections</span>
+          </button>
+
           {profile.bio && (
             <>
               <div className="my-4 border-t border-border" />
@@ -256,6 +293,61 @@ export default function UserPage() {
 
       {/* Posts carousel — own profile only */}
       {isOwnProfile && <PostsCarousel posts={posts} userId={profile.id} />}
+
+      {/* Connections dialog */}
+      <Dialog open={connDialogOpen} onOpenChange={setConnDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Connections</DialogTitle>
+          </DialogHeader>
+          <div className="max-h-96 overflow-y-auto space-y-1 pr-1">
+            {connLoading ? (
+              [...Array(4)].map((_, i) => (
+                <div key={i} className="flex items-center gap-3 px-1 py-2">
+                  <div className="h-11 w-11 rounded-full bg-muted animate-pulse shrink-0" />
+                  <div className="flex-1 space-y-1.5">
+                    <div className="h-3.5 w-32 rounded bg-muted animate-pulse" />
+                    <div className="h-3 w-48 rounded bg-muted animate-pulse" />
+                  </div>
+                </div>
+              ))
+            ) : connections.length === 0 ? (
+              <p className="py-8 text-center text-sm text-muted-foreground">No connections yet.</p>
+            ) : (
+              connections.map(conn => (
+                <div key={conn.id} className="flex items-center gap-3 rounded-lg px-1 py-2 hover:bg-muted/50 transition-colors">
+                  <Link href={`/user/${conn.id}`} onClick={() => setConnDialogOpen(false)}>
+                    {conn.profilePictureUrl ? (
+                      <img src={conn.profilePictureUrl} alt={conn.name} className="h-11 w-11 rounded-full object-cover shrink-0" />
+                    ) : (
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-muted">
+                        <User className="h-5 w-5 text-muted-foreground" />
+                      </div>
+                    )}
+                  </Link>
+                  <div className="flex-1 min-w-0">
+                    <Link href={`/user/${conn.id}`} onClick={() => setConnDialogOpen(false)} className="text-sm font-semibold text-foreground hover:underline truncate block">
+                      {conn.name}
+                    </Link>
+                    {conn.headline && <p className="text-xs text-muted-foreground truncate">{conn.headline}</p>}
+                  </div>
+                  {!isOwnProfile && (
+                    <Button
+                      size="xs"
+                      variant="outline"
+                      className="shrink-0 rounded-full gap-1"
+                      disabled={connPendingIds.has(conn.id)}
+                      onClick={() => handleConnectFromDialog(conn.id)}
+                    >
+                      {connPendingIds.has(conn.id) ? 'Sent' : <><UserPlus className="h-3 w-3" />Connect</>}
+                    </Button>
+                  )}
+                </div>
+              ))
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Avatar upload modal */}
       <Dialog open={avatarOpen} onOpenChange={open => { setAvatarOpen(open); if (!open) setSelectedFile(null) }}>
