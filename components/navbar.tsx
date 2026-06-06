@@ -12,6 +12,8 @@ import {
   Search,
   User,
   LogOut,
+  Sun,
+  Moon,
 } from 'lucide-react'
 
 import { Input } from '@/components/ui/input'
@@ -25,6 +27,7 @@ import {
 import { cn } from '@/lib/utils'
 import { apiFetch, removeToken } from '@/lib/api'
 import LinkedInLogo from '@/public/logo.png'
+import { useTheme } from 'next-themes'
 
 interface SearchResult {
   id: number
@@ -93,6 +96,7 @@ function Avatar({ src, name, size = 'sm' }: { src: string | null; name?: string;
 export function Navbar() {
   const pathname = usePathname()
   const router = useRouter()
+  const { resolvedTheme, setTheme } = useTheme()
   const [profile, setProfile] = useState<UserProfile | null>(null)
 
   const [query, setQuery] = useState('')
@@ -260,6 +264,16 @@ export function Navbar() {
                   View Profile
                 </Link>
               </div>
+
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem
+                onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+                className="flex items-center gap-2 px-4 py-2 text-sm cursor-pointer"
+              >
+                {resolvedTheme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                {resolvedTheme === 'dark' ? 'Light mode' : 'Dark mode'}
+              </DropdownMenuItem>
 
               <DropdownMenuSeparator />
 
